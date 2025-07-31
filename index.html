@@ -44,6 +44,9 @@
                 // 選択されたファイルをブラウザが扱えるURLに変換
                 const objectURL = URL.createObjectURL(file);
 
+                console.log("仮想ディスプレイを作成しています...");
+                cheerpjCreateDisplay(800, 600);
+
                 console.log(`JARファイル (${file.name}) を実行します...`);
                 // 作成したURLを使ってJARを実行
                 await cheerpjRunJar(objectURL);
