@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>CheerpJで任意のJARを実行</title>
+    <script src="https://cjrtnc.leaningtech.com/latest/cheerpj-loader.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 2em; }
+        .warning { border: 2px solid red; padding: 1em; background-color: #ffebeb; }
+    </style>
+</head>
+<body>
+    <h1>CheerpJで任意のJARファイルを実行</h1>
+
+    <div class="warning">
+        <h2>⚠️ セキュリティ上の警告</h2>
+        <p>信頼できない提供元からのJARファイルは絶対に実行しないでください。悪意のあるコードが含まれている可能性があります。</p>
+    </div>
+
+    <hr>
+
+    <p>実行したい.jarファイルを選択してください。</p>
+    <input type="file" id="jarFileInput" accept=".jar">
+    
+    <button id="runJarButton">JARを実行</button>
+
+    <script>
+        // 3. ボタンがクリックされたときの処理
+        document.getElementById('runJarButton').addEventListener('click', async () => {
+            const fileInput = document.getElementById('jarFileInput');
+            const file = fileInput.files[0]; // 選択されたファイルを取得
+
+            if (!file) {
+                alert("まずJARファイルを選択してください。");
+                return;
+            }
+
+            try {
+                console.log("CheerpJを初期化しています...");
+                // CheerpJを初期化
+                await cheerpjInit();
+                
+                console.log("ファイルからObject URLを作成しています...");
+                // 選択されたファイルをブラウザが扱えるURLに変換
+                const objectURL = URL.createObjectURL(file);
+
+                console.log(`JARファイル (${file.name}) を実行します...`);
+                // 作成したURLを使ってJARを実行
+                await cheerpjRunJar(objectURL);
+                
+                // メモリリークを防ぐためにObject URLを解放（推奨）
+                URL.revokeObjectURL(objectURL);
+                
+                console.log("Javaアプリケーションが起動しました。");
+
+            } catch (error) {
+                console.error("エラーが発生しました:", error);
+                alert("JARファイルの実行中にエラーが発生しました。詳細はコンソールを確認してください。");
+            }
+        });
+    </script>
+</body>
+</html>
