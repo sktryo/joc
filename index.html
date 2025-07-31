@@ -52,7 +52,7 @@
                 await cheerpjRunJar(objectURL);
                 
                 // メモリリークを防ぐためにObject URLを解放（推奨）
-                URL.revokeObjectURL(objectURL);
+                // URL.revokeObjectURL(objectURL);
                 
                 console.log("Javaアプリケーションが起動しました。");
 
